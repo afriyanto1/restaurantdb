@@ -1,7 +1,7 @@
 FROM php:8.1-apache
 LABEL maintainer="Afri Yanto <afriyanto01002@gmail.com>"
 
-# Install dependencies and extensions
+# Install system dependencies and PHP extensions
 RUN apt-get update && \
     apt-get install -y \
     libpng-dev \
@@ -11,19 +11,21 @@ RUN apt-get update && \
     zip \
     curl \
     && docker-php-ext-install pdo pdo_mysql mysqli \
-    && a2enmod rewrite headers status log_config
+    && a2enmod rewrite headers status
 
-# Configure Apache logging and status
+# Configure Apache logging and server status
 RUN { \
-    echo 'ErrorLog ${APACHE_LOG_DIR}/error.log'; \
-    echo 'CustomLog ${APACHE_LOG_DIR}/access.log combined'; \
+    echo 'ErrorLog /var/log/apache2/error.log'; \
+    echo 'CustomLog /var/log/apache2/access.log combined'; \
+    echo 'LogLevel warn'; \
     echo '<Location /server-status>'; \
     echo '    SetHandler server-status'; \
     echo '    Require all granted'; \
     echo '</Location>'; \
+    echo 'ErrorLogFormat "[%t] [%l] [pid %P] %F: %E: [client %a] %M"'; \
 } >> /etc/apache2/sites-available/000-default.conf
 
-# Create log directories and set permissions
+# Create directories and set permissions
 RUN mkdir -p \
     /var/www/html/logs \
     /var/log/apache2 \
@@ -49,6 +51,7 @@ COPY RestaurantProject/ /var/www/html/
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# Health check configuration
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
