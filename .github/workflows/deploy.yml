@@ -12,33 +12,37 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.GCP_SSH_KEY }}
+    - name: Set up SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.GCP_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.GCP_HOST }} >> ~/.ssh/known_hosts
 
     - name: Install rsync
       run: sudo apt-get update && sudo apt-get install -y rsync
 
     - name: Transfer files
       run: |
-        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GCP_SSH_KEY }}" \
+        rsync -avz -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
           --exclude='.git' \
           --exclude='.github' \
           ./ ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }}:/app/restaurant-project/
 
     - name: Deploy Application
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.GCP_SSH_KEY }} \
-          ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
-          "sudo dnf install -y docker docker-compose
-           sudo systemctl enable --now docker
-           sudo usermod -aG docker ${{ secrets.GCP_USER }}
-           cd /app/restaurant-project
-           docker-compose down
-           docker-compose up -d --build"
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
+          ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} << 'EOF'
+          sudo dnf install -y docker docker-compose
+          sudo systemctl enable --now docker
+          sudo usermod -aG docker ${{ secrets.GCP_USER }}
+          cd /app/restaurant-project
+          docker-compose down
+          docker-compose up -d --build
+        EOF
 
     - name: Verify Deployment
       run: |
-        ssh ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
+          ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
           "docker ps && curl -I http://localhost:8080"
