@@ -16,7 +16,6 @@ jobs:
       run: |
         echo "${{ secrets.GCP_SSH_KEY }}" > rocky-key
         chmod 600 rocky-key
-        ssh-keyscan -H ${{ secrets.GCP_HOST }} >> ~/.ssh/known_hosts
 
     - name: Clone from Afri Github
       run: |
