@@ -16,12 +16,14 @@ jobs:
       run: |
         echo "${{ secrets.GCP_SSH_KEY }}" > rocky-key
         chmod 600 rocky-key
+        ssh-keyscan -H ${{ secrets.GCP_HOST }} >> ~/.ssh/known_hosts
 
     - name: Clone from Afri Github
       run: |
         ssh -i rocky-key -o StrictHostKeyChecking=no \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
-          "git clone https://github.com/afriyanto1/restaurantdb.git"
+          "git clone https://github.com/afriyanto1/restaurantdb.git && \
+          ls -la"
 
     - name: Deploy Application
       run: |
