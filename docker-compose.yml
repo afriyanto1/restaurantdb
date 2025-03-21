@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # PHP Application
   web:
     build: .
     container_name: restaurant_app
@@ -17,8 +18,8 @@ services:
       - DB_PASS=rootpassword
       - DB_NAME=mydatabase
     networks:
-      my_network:
-      monitoring_network:
+      - my_network
+      - monitoring_network
     depends_on:
       - mysql
     healthcheck:
@@ -27,6 +28,7 @@ services:
       timeout: 10s
       retries: 3
 
+  # Existing MySQL Service
   mysql:
     image: mysql:8.0
     container_name: mysql8_container
@@ -42,8 +44,9 @@ services:
       - mysql_data:/var/lib/mysql
       - ./restaurantDB.txt:/docker-entrypoint-initdb.d/init.sql
     networks:
-      my_network:
+      - my_network
 
+  # Monitoring Stack
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -52,7 +55,7 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
-      monitoring_network:
+      - monitoring_network
 
   loki:
     image: grafana/loki
@@ -61,7 +64,7 @@ services:
       - 3100:3100
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      monitoring_network:
+      - monitoring_network
 
   promtail:
     image: grafana/promtail
@@ -72,8 +75,8 @@ services:
       - ./apache_logs:/var/log/apache2
     command: -config.file=/etc/promtail/config.yml
     networks:
-      monitoring_network:
-      my_network:
+      - monitoring_network
+      - my_network
 
   grafana:
     image: grafana/grafana
@@ -84,8 +87,11 @@ services:
       - grafana_data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - loki
     networks:
-      monitoring_network:
+      - monitoring_network
 
   node-exporter:
     image: prom/node-exporter
@@ -93,7 +99,7 @@ services:
     ports:
       - 9100:9100
     networks:
-      monitoring_network:
+      - monitoring_network
 
 volumes:
   mysql_data:
@@ -102,7 +108,5 @@ volumes:
 networks:
   my_network:
     driver: bridge
-    name: restaurant_network
   monitoring_network:
     driver: bridge
-    name: monitoring_network
