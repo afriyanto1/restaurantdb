@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Table_Availability (
   FOREIGN KEY (table_id) REFERENCES Restaurant_Tables(table_id)
 );
 
-CREATE TABLE IF NOT EXISTS reservations (
+CREATE TABLE IF NOT EXISTS Reservations (
   reservation_id INT PRIMARY KEY AUTO_INCREMENT,
   customer_name VARCHAR(255),
   table_id INT,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS Bills (
   payment_time DATETIME,
   FOREIGN KEY (staff_id) REFERENCES Staffs(staff_id),
   FOREIGN KEY (member_id) REFERENCES Memberships(member_id),
-  FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id),
+  FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id),
   FOREIGN KEY (table_id) REFERENCES Restaurant_Tables(table_id),
   FOREIGN KEY (card_id) REFERENCES card_payments(card_id)
 );
@@ -312,8 +312,8 @@ VALUES
 
 
 
--- reservations table
-INSERT INTO reservations (reservation_id, customer_name, table_id, reservation_time, reservation_date, head_count, special_request)
+-- Reservations table
+INSERT INTO Reservations (reservation_id, customer_name, table_id, reservation_time, reservation_date, head_count, special_request)
 VALUES 
 (2220231, 'Abbel Tu Far Behind', 1, '22:00:34', '2023-09-28', 1, 'Prepare Panadol for me'),
 (2220232, 'Abignaile Lin Downney Jr', 2, '22:00:34', '2023-09-29', 1, 'Default Special Request'),
