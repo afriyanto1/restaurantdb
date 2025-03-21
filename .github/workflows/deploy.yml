@@ -15,7 +15,7 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        ssh-private-key: ${{ secrets.GCP_SSH_KEY }}
+        ssh-private-key: ${{ secret.GCP_SSH_KEY }}
 
     - name: Install rsync
       run: sudo apt-get update && sudo apt-get install -y rsync
@@ -25,20 +25,20 @@ jobs:
         rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
           --exclude='.git' \
           --exclude='.github' \
-          ./ ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }}:/app/restaurant-project/
+          ./ ${{ secret.GCP_USER }}@${{ secret.GCP_HOST }}:/app/restaurant-project/
 
     - name: Deploy Application
       run: |
         ssh -o StrictHostKeyChecking=no \
-          ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
+          ${{ secret.GCP_USER }}@${{ secret.GCP_HOST }} \
           "sudo dnf install -y docker docker-compose
            sudo systemctl enable --now docker
-           sudo usermod -aG docker ${{ secrets.GCP_USER }}
+           sudo usermod -aG docker ${{ secret.GCP_USER }}
            cd /app/restaurant-project
            docker-compose down
            docker-compose up -d --build"
 
     - name: Verify Deployment
       run: |
-        ssh ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
+        ssh ${{ secret.GCP_USER }}@${{ secret.GCP_HOST }} \
           "docker ps && curl -I http://localhost:8080"
