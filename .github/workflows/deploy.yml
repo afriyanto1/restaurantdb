@@ -22,14 +22,14 @@ jobs:
 
     - name: Transfer files
       run: |
-        rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GCP_SSH_KEY }}" \
           --exclude='.git' \
           --exclude='.github' \
           ./ ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }}:/app/restaurant-project/
 
     - name: Deploy Application
       run: |
-        ssh -o StrictHostKeyChecking=no \
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.GCP_SSH_KEY }} \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
           "sudo dnf install -y docker docker-compose
            sudo systemctl enable --now docker
