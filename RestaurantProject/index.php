@@ -39,7 +39,7 @@ try {
 
     // Create database
     $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS restaurantdb";
-    if ($link->query($sqlCreateDB) {
+    if ($link->query($sqlCreateDB)) {
         error_log("Database restaurantdb created/verified");
     } else {
         throw new Exception("Error creating database: " . $link->error);
