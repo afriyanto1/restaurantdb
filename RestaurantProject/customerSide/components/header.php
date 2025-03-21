@@ -105,7 +105,7 @@ $account_id = $_SESSION['account_id'] ?? null; // Change this to the way you obt
 
 // Check if the user is logged in
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $account_id != null) {
-    $query = "SELECT member_name, points FROM memberships WHERE account_id = $account_id";
+    $query = "SELECT member_name, points FROM Memberships WHERE account_id = $account_id";
 
 // Execute the query
 $result = mysqli_query($link, $query);
