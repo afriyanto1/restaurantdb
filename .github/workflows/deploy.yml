@@ -31,10 +31,12 @@ jobs:
           "sudo usermod -aG docker ${{ secrets.GCP_USER }} && \
            cd restaurantdb/ && \
            docker-compose down && \
-           docker-compose up -d --build"
+           docker-compose up -d --build && \
+           docker exec -it mysql8_container chmod 644 /docker-entrypoint-initdb.d/init.sql && \
+           docker exec -it mysql8_container mysql -u root -p${{ secrets.MYSQL_PASSWORD }} restaurantdb -e 'source /docker-entrypoint-initdb.d/init.sql"
 
     - name: Verify Deployment
       run: |
         ssh -i rocky-key -o StrictHostKeyChecking=no \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
-          "docker ps && curl -I http://localhost:8080"
+          "docker ps && curl --head http://localhost:8080/customerSide/home/home.php"
