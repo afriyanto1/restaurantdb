@@ -16,7 +16,7 @@ services:
       - DB_HOST=mysql
       - DB_USER=root
       - DB_PASS=rootpassword
-      - DB_NAME=mydatabase
+      - DB_NAME=restaurantdb
     networks:
       - my_network
       - monitoring_network
@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
+      MYSQL_DATABASE: restaurantdb
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypassword
     ports:
