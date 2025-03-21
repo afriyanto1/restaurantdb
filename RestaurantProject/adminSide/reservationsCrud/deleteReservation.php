@@ -9,7 +9,7 @@ if (isset($_GET['id'])) {
 
     // Construct the DELETE query with a prepared statement
     // Delete associated bill items first
-    $deleteBillItemsSQL = "DELETE FROM bill_items WHERE bill_id IN (SELECT bill_id FROM bills WHERE reservation_id = ?)";
+    $deleteBillItemsSQL = "DELETE FROM Bill_Items WHERE bill_id IN (SELECT bill_id FROM bills WHERE reservation_id = ?)";
     if ($stmt = mysqli_prepare($link, $deleteBillItemsSQL)) {
         mysqli_stmt_bind_param($stmt, "i", $reservation_id);
         if (mysqli_stmt_execute($stmt)) {

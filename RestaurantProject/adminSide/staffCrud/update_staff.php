@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $staff_id = intval($staff_id);
 
     $checkAccountQuery = "SELECT * FROM Accounts WHERE account_id = ?";
-    $checkStaffQuery = "SELECT * FROM staffs WHERE staff_id = ?";
+    $checkStaffQuery = "SELECT * FROM Staffs WHERE staff_id = ?";
 
     // Use prepared statements
     $accountStmt = $conn->prepare($checkAccountQuery);

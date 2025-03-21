@@ -97,7 +97,7 @@ $head_count = $_GET['head_count'] ?? 1;
                                 $table_id_list = $_GET['reserved_table_id'];
                                 $head_count = $_GET['head_count'] ?? 1;
                                 $reserved_table_ids = explode(',', $table_id_list);
-                                $select_query_tables = "SELECT * FROM restaurant_tables WHERE capacity >= '$head_count'";
+                                $select_query_tables = "SELECT * FROM Restaurant_Tables WHERE capacity >= '$head_count'";
                                 if (!empty($reserved_table_ids)) {
                                     $reserved_table_ids_string = implode(',', $reserved_table_ids);
                                     $select_query_tables .= " AND table_id NOT IN ($reserved_table_ids_string)";

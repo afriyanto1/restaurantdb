@@ -30,7 +30,7 @@ $bill_id = $_GET['bill_id'];
                             <tbody>
             <?php
             // Query to fetch cart items for the given bill_id
-            $cart_query = "SELECT bi.*, m.item_name, m.item_price FROM bill_items bi
+            $cart_query = "SELECT bi.*, m.item_name, m.item_price FROM Bill_Items bi
                            JOIN Menu m ON bi.item_id = m.item_id
                            WHERE bi.bill_id = '$bill_id'";
             $cart_result = mysqli_query($link, $cart_query);

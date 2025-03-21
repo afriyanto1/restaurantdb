@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $reservation_date = $_POST["reservation_date"];
     $special_request = $_POST["special_request"];
     
-    $select_query_capacity = "SELECT capacity FROM restaurant_tables WHERE table_id='$table_id';";
+    $select_query_capacity = "SELECT capacity FROM Restaurant_Tables WHERE table_id='$table_id';";
     $results_capacity = mysqli_query($link, $select_query_capacity);
 
     if ($results_capacity) {

@@ -13,7 +13,7 @@ $bill_result = mysqli_query($link, $bill_query);
 $bill_data = mysqli_fetch_assoc($bill_result);
 
 // Fetch items for the given bill_id
-$items_query = "SELECT bi.*, m.item_name, m.item_price FROM bill_items bi
+$items_query = "SELECT bi.*, m.item_name, m.item_price FROM Bill_Items bi
                 JOIN Menu m ON bi.item_id = m.item_id
                 WHERE bi.bill_id = '$bill_id'";
 $items_result = mysqli_query($link, $items_query);
