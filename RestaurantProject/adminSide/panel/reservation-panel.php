@@ -33,19 +33,19 @@ require_once '../posBackend/checkIfLoggedIn.php';
                 <?php
                 // Include config file
                 require_once "../config.php";
-                $sql = "SELECT * FROM reservations ORDER BY reservation_id;";
+                $sql = "SELECT * FROM Reservations ORDER BY reservation_id;";
 
                 if (isset($_POST['search'])) {
                     if (!empty($_POST['search'])) {
                         $search = $_POST['search'];
 
-                        $sql = "SELECT * FROM reservations WHERE reservation_date LIKE '%$search%' OR reservation_id LIKE '%$search%' OR customer_name LIKE '%$search%'";
+                        $sql = "SELECT * FROM Reservations WHERE reservation_date LIKE '%$search%' OR reservation_id LIKE '%$search%' OR customer_name LIKE '%$search%'";
                     } else {
                         // Default query to fetch all reservations
-                        $sql = "SELECT * FROM reservations ORDER BY reservation_date DESC, reservation_time DESC;";
+                        $sql = "SELECT * FROM Reservations ORDER BY reservation_date DESC, reservation_time DESC;";
                     }
                 } else{
-                    $sql = "SELECT * FROM reservations ORDER BY reservation_date DESC, reservation_time DESC;";
+                    $sql = "SELECT * FROM Reservations ORDER BY reservation_date DESC, reservation_time DESC;";
 
                 }
                 
