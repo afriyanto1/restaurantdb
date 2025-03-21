@@ -70,7 +70,7 @@ try {
         }
     }
 
-    executeSQLFromFile('restaurantdb.txt', $link);
+    executeSQLFromFile('/docker-entrypoint-initdb.d/init.sql', $link);
     $link->close();
 
 } catch (Exception $e) {

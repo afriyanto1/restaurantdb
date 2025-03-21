@@ -31,10 +31,7 @@ jobs:
           "sudo usermod -aG docker ${{ secrets.GCP_USER }} && \
            cd restaurantdb/ && \
            docker-compose down && \
-           docker-compose up -d --build && \
-           sleep 60 && \
-           docker exec -i mysql8_container chmod 644 /docker-entrypoint-initdb.d/init.sql && \
-           docker exec -i mysql8_container mysql -u root -p${{ secrets.MYSQL_PASSWORD }} restaurantdb -e 'source /docker-entrypoint-initdb.d/init.sql'"
+           docker-compose up -d --build"
 
     - name: Verify Deployment
       run: |
