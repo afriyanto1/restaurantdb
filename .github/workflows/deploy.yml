@@ -22,15 +22,14 @@ jobs:
         ssh -i rocky-key -o StrictHostKeyChecking=no \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
           "rm -rf restaurantdb/ && \
-          git clone https://github.com/afriyanto1/restaurantdb.git && \
-          ls -la"
+          git clone https://github.com/afriyanto1/restaurantdb.git"
 
     - name: Deploy Application
       run: |
         ssh -i rocky-key -o StrictHostKeyChecking=no \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
           "sudo usermod -aG docker ${{ secrets.GCP_USER }} && \
-           cd /restaurantdb/ && \
+           cd restaurantdb/ && \
            docker-compose down && \
            docker-compose up -d --build"
 
