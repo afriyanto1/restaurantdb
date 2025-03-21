@@ -60,7 +60,7 @@ require_once '../config.php'; // Include your database configuration
                         if ($latestBillData) {
                             $latestBillID = $latestBillData['bill_id'];
 
-                            $sqlBillItems = "SELECT * FROM bill_items WHERE bill_id = $latestBillID";
+                            $sqlBillItems = "SELECT * FROM Bill_Items WHERE bill_id = $latestBillID";
                             $result2 = $link->query($sqlBillItems);
                             if ($result2 && mysqli_num_rows($result2) > 0) {
                                 $billItemColor = 'rgb(216, 0, 50)'; // Bill has associated bill items (red)
