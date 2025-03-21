@@ -21,7 +21,8 @@ jobs:
       run: |
         ssh -i rocky-key -o StrictHostKeyChecking=no \
           ${{ secrets.GCP_USER }}@${{ secrets.GCP_HOST }} \
-          "git clone https://github.com/afriyanto1/restaurantdb.git && \
+          "rm -rf restaurantdb/ && \
+          git clone https://github.com/afriyanto1/restaurantdb.git && \
           ls -la"
 
     - name: Deploy Application
